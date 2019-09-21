@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.crud.dao.HobbyMapper">
+  <resultMap id="BaseResultMap" type="com.web.crud.bean.Hobby">
+    <id column="hobby_id" jdbcType="INTEGER" property="hobbyId" />
+    <result column="hobby_name" jdbcType="VARCHAR" property="hobbyName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    hobby_id, hobby_name
+  </sql>
+  <select id="selectByExample" parameterType="com.web.crud.bean.HobbyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hobby
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hobby
+    where hobby_id = #{hobbyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hobby
+    where hobby_id = #{hobbyId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.web.crud.bean.HobbyExample">
+    delete from hobby
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.web.crud.bean.Hobby">
+    insert into hobby (hobby_id, hobby_name)
+    values (#{hobbyId,jdbcType=INTEGER}, #{hobbyName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.web.crud.bean.Hobby">
+    insert into hobby
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hobbyId != null">
+        hobby_id,
+      </if>
+      <if test="hobbyName != null">
+        hobby_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="hobbyId != null">
+        #{hobbyId,jdbcType=INTEGER},
+      </if>
+      <if test="hobbyName != null">
+        #{hobbyName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.web.crud.bean.HobbyExample" resultType="java.lang.Long">
+    select count(*) from hobby
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update hobby
+    <set>
+      <if test="record.hobbyId != null">
+        hobby_id = #{record.hobbyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hobbyName != null">
+        hobby_name = #{record.hobbyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update hobby
+    set hobby_id = #{record.hobbyId,jdbcType=INTEGER},
+      hobby_name = #{record.hobbyName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.crud.bean.Hobby">
+    update hobby
+    <set>
+      <if test="hobbyName != null">
+        hobby_name = #{hobbyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where hobby_id = #{hobbyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.crud.bean.Hobby">
+    update hobby
+    set hobby_name = #{hobbyName,jdbcType=VARCHAR}
+    where hobby_id = #{hobbyId,jdbcType=INTEGER}
+  </update>
+</mapper>
